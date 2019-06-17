@@ -21,3 +21,7 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/pv2sim/pv2sim.iml
+.idea/
+pv2sim/pv2sim.iml
+pv2sim/src/test/
