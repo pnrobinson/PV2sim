@@ -50,11 +50,11 @@ public class VcfSimulator {
     }
 
 
-    static VCFHeader updateHeaderWithPhenopacketSample(VCFHeader original, String sampleId) {
+    static private VCFHeader updateHeaderWithPhenopacketSample(VCFHeader original, String sampleId) {
         return new VCFHeader(original.getMetaDataInSortedOrder(), Collections.singleton(sampleId));
     }
 
-    static UnaryOperator<VariantContext> changeSampleNameInGenotypes(final String sampleId) {
+    static private UnaryOperator<VariantContext> changeSampleNameInGenotypes(final String sampleId) {
         return vc -> {
             final VariantContextBuilder vcb = new VariantContextBuilder(vc)
                     .noGenotypes() // remove present genotypes and then add updated
@@ -163,7 +163,7 @@ public class VcfSimulator {
 
         // we create a temporary VCF file for LIRICAL analysis
         final File outPath = File.createTempFile("single-vcf-simulator-" + subjectId + "-", ".vcf");
-        outPath.deleteOnExit();
+       // outPath.deleteOnExit();
 
         try (VCFFileReader reader = new VCFFileReader(templateVcfPath, false);
              VariantContextWriter writer = new VariantContextWriterBuilder()
