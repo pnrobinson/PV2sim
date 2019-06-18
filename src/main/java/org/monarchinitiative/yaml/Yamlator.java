@@ -96,10 +96,10 @@ public class Yamlator {
                 .collect(Collectors.joining(", "));
         w.write(fourSpaces + "hpoIds: [" + result + "]\n");
         w.write(fourSpaces + "inheritanceModes: {}\n");
-        w.write(fourSpaces + " analysisMode: PASS_ONLY\n");
+        w.write(fourSpaces + "analysisMode: PASS_ONLY\n");
         result = String.join(", ", frequencySources);
         w.write(fourSpaces + "frequencySources: [" + result + "]\n");
-        w.write(fourSpaces + "pathogenicitySources: [POLYPHEN, MUTATION_TASTER, SIFT]");
+        w.write(fourSpaces + "pathogenicitySources: [POLYPHEN, MUTATION_TASTER, SIFT]\n");
         w.write(fourSpaces + "steps: [\n");
         w.write(fourSpaces + fourSpaces + "variantEffectFilter: {\n");
         result = String.join(", ", removeSteps);
