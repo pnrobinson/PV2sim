@@ -91,7 +91,20 @@
       </exclusions>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
+      <dependency>
+          <groupId>org.yaml</groupId>
+          <artifactId>snakeyaml</artifactId>
+          <version>1.24</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.tukaani</groupId>
+          <artifactId>xz</artifactId>
+          <version>1.8</version>
+      </dependency>
+
+
+      <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>
       <artifactId>json-simple</artifactId>
@@ -321,7 +334,26 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-enforcer-plugin</artifactId>
+              <version>3.0.0-M2</version>
+              <executions>
+                  <execution>
+                      <id>enforce</id>
+                      <configuration>
+                          <rules>
+                              <DependencyConvergence/>
+                          </rules>
+                      </configuration>
+                      <goals>
+                          <goal>enforce</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
       </plugins>
+
     </pluginManagement>
   </build>
 </project>

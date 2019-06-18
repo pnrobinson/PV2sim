@@ -42,10 +42,19 @@ public class VcfSimulator {
     /** Path to the file into which we will inject a mutation from a Phenopacket. */
     private final Path templateVcfPath;
 
+    private final String outputPath;
+
+    private final static String DEFAULT_OUTPUT_NAME="pv2sim-output.vcf";
+
     /**
      * @param templateVcfPath {@link Path} to possibly un-indexed VCF file
      */
     public VcfSimulator(Path templateVcfPath) {
+        this(templateVcfPath,DEFAULT_OUTPUT_NAME);
+    }
+
+    public VcfSimulator(Path templateVcfPath,String out) {
+        this.outputPath=out;
         this.templateVcfPath = templateVcfPath;
     }
 
@@ -162,7 +171,7 @@ public class VcfSimulator {
         }
 
         // we create a temporary VCF file for LIRICAL analysis
-        final File outPath = File.createTempFile("single-vcf-simulator-" + subjectId + "-", ".vcf");
+        final File outPath = new File(this.outputPath);
        // outPath.deleteOnExit();
 
         try (VCFFileReader reader = new VCFFileReader(templateVcfPath, false);

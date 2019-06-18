@@ -11,10 +11,7 @@ import org.monarchinitiative.phenol.base.PhenolRuntimeException;
 import org.monarchinitiative.phenol.ontology.data.Ontology;
 import org.monarchinitiative.phenol.ontology.data.TermId;
 import org.phenopackets.schema.v1.Phenopacket;
-import org.phenopackets.schema.v1.core.Disease;
-import org.phenopackets.schema.v1.core.HtsFile;
-import org.phenopackets.schema.v1.core.PhenotypicFeature;
-import org.phenopackets.schema.v1.core.Variant;
+import org.phenopackets.schema.v1.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +36,8 @@ public class PhenopacketImporter {
     private final String samplename;
     /** Reference to HPO ontology */
     private final Ontology hpo;
+
+    private String genomeAssembly;
 
     /**
      * Factory method to obtain a PhenopacketImporter object starting from a phenopacket in Json format
@@ -70,6 +69,26 @@ public class PhenopacketImporter {
         this.samplename = this.phenoPacket.getSubject().getId();
         this.hpo=ontology;
         extractVcfData();
+        inferGenomeAssembly();
+    }
+
+    /**
+     * Extract a string representing the genome assembly. First try to find it in the VCF data.
+     * If a VCF is not available, try to find it from the Variant data.
+     */
+    private void inferGenomeAssembly(){
+        if (this.vcfFile!=null) {
+            this.genomeAssembly = this.vcfFile.getGenomeAssembly();
+            return;
+        }
+        for (Variant v : phenoPacket.getVariantsList() ) {
+            if (v.hasVcfAllele()) {
+                VcfAllele va = v.getVcfAllele();
+                this.genomeAssembly=va.getGenomeAssembly();
+                return;
+            }
+        }
+        genomeAssembly="n/a"; // failed
     }
 
     public boolean hasVcf() { return  this.vcfFile !=null; }
@@ -134,9 +153,7 @@ public class PhenopacketImporter {
     }
 
     public String getGenomeAssembly() {
-        return   this.vcfFile!=null ?
-                this.vcfFile.getGenomeAssembly() :
-                null;
+        return this.genomeAssembly;
     }
 
     public String getSamplename() {
